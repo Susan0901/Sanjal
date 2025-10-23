@@ -1,14 +1,18 @@
 import express from "express";
 import dotenv from "dotenv";
+import cookieParser from "cookie-parser";
 import cors from "cors";
+import connectDB from "./config/db.js";
+import authRoutes from "./routes/authRoutes.js";
 
-dotenv.config();
+dotenv.config(); // loads .env variabes into process.env
 
 const PORT = process.env.PORT || 3000;
 const app = express();
 
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json()); // parse request bodies
+app.use(express.urlencoded({ extended: true })); // parse form-data
+app.use(cookieParser()); // parse cookies
 
 app.use(
   cors({
@@ -21,6 +25,12 @@ app.use(
   })
 );
 
-app.listen(PORT, () => {
-  console.log(`Successfully running on PORT: ${PORT}`);
-});
+// routes
+app.use("/api/auth", authRoutes);
+
+// connecting MONGO_DB
+connectDB().then(
+  app.listen(PORT, () => {
+    console.log(`Successfully running on PORT: ${PORT}`);
+  })
+);
