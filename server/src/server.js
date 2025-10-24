@@ -16,10 +16,7 @@ app.use(cookieParser()); // parse cookies
 
 app.use(
   cors({
-    origin:
-      process.env.NODE_ENV === "Development"
-        ? process.env.CLIENT_DEV_URL
-        : process.env.CLIENT_PROD_URL,
+    origin: process.env.CLIENT_DEV_URL,
     methods: ["GET", "HEAD", "POST", "PUT", "PATCH", "DELETE"],
     credentials: true,
   })
